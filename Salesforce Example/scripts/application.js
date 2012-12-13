@@ -1,6 +1,5 @@
 
-var sfw, lat, lng, lastData;
-var currentLead;
+var sfw, lat, lng, lastData, currentLead;
 var lastCoords = {};
 
 viewModel = new kendo.observable({ currentLead: {} });
@@ -34,16 +33,14 @@ function setupFormView(data) {
     console.log("setupFormView fired");
  
     currentLead = data;
-    
-    viewModel.set("currentLead", currentLead);
-	
-	// request current location
+ 
 	if (!(data && data.Id)) {
 		app.view.title = "New Lead"
+        // Request the current location for a new entry
 		navigator.geolocation.getCurrentPosition(onGeolocationSuccess, onGeolocationError, { enableHighAccuracy: true });
-	}
-	else {
+	} else {
 		app.view.title = "Edit Lead";
+        viewModel.set("currentLead", currentLead);
 	}
 }
 
@@ -74,8 +71,7 @@ function saveFormData() {
 		// Use the original lat/long data
 		data.Latitude__c = currentLead.Latitude__c;
 		data.Longitude__c = currentLead.Longitude__c
-	}
-	else if (lastCoords) {
+	} else if (lastCoords) {
 		console.log("lastCoords == yes");
         
 		data.Latitude__c = lastCoords.latitude;
@@ -85,12 +81,11 @@ function saveFormData() {
 	try {
 		if (currentLead == undefined) {
 			console.log("currentLead == undefined");
-            
+            // If this is a new record, create it
 			sfw.client.create("Lead__c", data, onSaveSuccess, onSaveError);
-		}
-		else {
+		} else {
 			console.log("currentLead: " + currentLead.Last__c);
-            
+            // If this is an existing record, update it    
 			sfw.client.update("Lead__c", currentLead.Id, data, onSaveSuccess, onSaveError);
 		}
 	}
@@ -103,6 +98,11 @@ function onSaveSuccess(result) {
 	console.log("onSaveSuccess fired");
     
 	navigator.notification.alert("Data Saved", function() {
+        // Clear the form
+        $("#lead-form")[0].reset();
+        // Get the updated data
+        queryRecords();
+        // Go home
 		app.navigate("#home");
 	});
 }
@@ -117,9 +117,10 @@ function leadsShow() {
 	console.log("leadsShow fired");
     
 	if (lastData) {
+        // If there is data, render the ListView
 		renderListData();
-	}
-	else {
+	} else {
+        // If there is not data, go get it
 		queryRecords();
 	}
 }
@@ -150,6 +151,8 @@ function renderListData() {
 	console.log("renderListData fired");
     
 	if (lastData) {
+        console.log("lastData records: " + lastData.records.length);
+        
 		$("#leads-listview").kendoMobileListView({
 			dataSource: kendo.data.DataSource.create({data: lastData.records, group: "Last__c" }),
 			template: $("#leadsListViewTemplate").html(),
@@ -163,7 +166,9 @@ function renderListData() {
 				app.navigate("#lead");
 			}
 		});
-	}    
+	} else {
+        console.log("lastData is null or undefined");
+    }
 }
 
 function getRecordById(id) {

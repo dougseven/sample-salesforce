@@ -1,26 +1,72 @@
-﻿body
-{
-    font: Arial, sans-serif;
+.km-ios .km-view .km-navbar {
+    background-color: rgb(0, 0, 0);
+}
+.km-ios .km-view .km-content .km-button.km-state-active {
+    background-color: rgb(0, 163, 199);
+}
+.km-ios .km-view .km-navbar .km-button.km-state-active {
+    background-color: rgb(76, 76, 76);
+}
+.km-ios .km-view .km-navbar .km-button {
+    background-color: rgb(76, 76, 76);
+    font-size: 1em;
+}
+.km-ios .km-view .km-content {
+    background-color: rgb(255, 255, 255);
 }
 
-.buttonArea,
-.footerText,
-#geoLocationContainer,
-#helloWorldInput,
-#helloWorldText
-{
-    text-align: center;
+.save-button  {
+    background-color: green !important;
 }
 
-#txtName
-{
-    border: 1px solid #AAA;
-    border-radius: 15px;
-    position:static;
-    margin-left: 1em;
-    margin-top: 0.3em;
-    margin-bottom: 0.3em;
-    background:white;
-    color: black;
-    padding: 7px;
+.cancel-button  {
+    background-color: red !important;
+    width: 80px !important;
+    padding: 12pt;
+    margin: 6pt;
+}
+
+.centered-panel {
+    margin: 6pt;
+    text-align: center;    
+}
+
+#login-button {
+        background-color: rgb(0, 163, 199);
+    font-family: HelveticaNeue, Roboto, 'Myriad Pro', 'Nokia Pure', Arial, sans-serif;
+    font-size: 1.2em;
+    width: 160px;
+    padding: 12pt;
+    margin: 6pt;
+    
+    background-color: green;
+    padding: 12pt;
+    padding-left: 24pt;
+    padding-right: 24pt;
+    margin-top: 36pt;
+    
+    font-weight: normal;
+    font-style: normal;
+    line-height: normal;
+    text-shadow: none;
+}
+
+#latlng {
+    font-family: HelveticaNeue, Roboto, 'Myriad Pro', 'Nokia Pure', Arial, sans-serif;
+    margin: 6pt;
+    padding: 6pt;
+    color: rgb(51, 153, 153);
+    background-color: rgb(204, 255, 255);
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(51, 153, 153);
+}
+
+.leadName {
+    font-size: 1em;
+}
+
+.leadEmail {
+    font-size: .8em;
 }

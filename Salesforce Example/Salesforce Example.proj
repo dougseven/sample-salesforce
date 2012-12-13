@@ -8,8 +8,11 @@
     <IsRunnable>true</IsRunnable>
     <TemplateAppName>Cordova220</TemplateAppName>
     <AndroidPermissions>android.permission.CAMERA;android.permission.VIBRATE;android.permission.ACCESS_COARSE_LOCATION;android.permission.ACCESS_FINE_LOCATION;android.permission.ACCESS_LOCATION_EXTRA_COMMANDS;android.permission.READ_PHONE_STATE;android.permission.INTERNET;android.permission.RECEIVE_SMS;android.permission.RECORD_AUDIO;android.permission.MODIFY_AUDIO_SETTINGS;android.permission.READ_CONTACTS;android.permission.WRITE_CONTACTS;android.permission.WRITE_EXTERNAL_STORAGE;android.permission.ACCESS_NETWORK_STATE;android.permission.ACCOUNT_MANAGER;android.permission.GET_ACCOUNTS;android.permission.MANAGE_ACCOUNTS;android.permission.BROADCAST_STICKY</AndroidPermissions>
-    <DeviceOrientations>Portrait;Landscape</DeviceOrientations>
+    <DeviceOrientations>Portrait</DeviceOrientations>
     <iOSStatusBarStyle>Default</iOSStatusBarStyle>
+    <BundleVersion>1.0</BundleVersion>
+    <AndroidVersionCode>1</AndroidVersionCode>
+    <AndroidHardwareAcceleration>True</AndroidHardwareAcceleration>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="App_Resources" />
@@ -40,7 +43,7 @@
     <Resource Include="App_Resources\iOS\Icon-Small-50@2x.png" />
     <Resource Include="App_Resources\iOS\Default.png" />
     <Resource Include="App_Resources\iOS\Default@2x.png" />
-  <Resource Include="App_Resources\iOS\Default-568h@2x.png" />
+    <Resource Include="App_Resources\iOS\Default-568h@2x.png" />
     <Resource Include="App_Resources\iOS\Default-Portrait.png" />
     <Resource Include="App_Resources\iOS\Default-Landscape.png" />
     <Resource Include="App_Resources\iOS\Default-Portrait@2x.png" />
@@ -59,7 +62,10 @@
     <Content Include="kendo\styles\images\KendoUI.ttf" />
     <Content Include="kendo\styles\images\KendoUI.woff" />
     <Content Include="kendo\styles\kendo.mobile.all.min.css" />
+    <Content Include="scripts\application.js" />
+    <Content Include="scripts\forcetk.js" />
     <Content Include="scripts\hello-world.js" />
+    <Content Include="scripts\salesforceWrapper.js" />
     <Content Include="styles\main.css" />
     <Content Include="cordova.ios.js">
       <Platform>iOS</Platform>
@@ -69,6 +75,15 @@
       <Platform>Android</Platform>
       <TargetName>cordova.js</TargetName>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <CordovaPlugin Include="com.phonegap.plugins.childbrowser">
+      <Version>4.0.0</Version>
+      <Name>Child Browser</Name>
+    </CordovaPlugin>
+  </ItemGroup>
+  <ItemGroup>
+    <CordovaPluginContent Include="com.phonegap.plugins.childbrowser\childbrowser.js" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Telerik\ICE\Tools\Mobile\MobileTools.targets" />
 </Project>

@@ -31,7 +31,12 @@ function leadShow() {
 }
 
 function setupFormView(data) {
-	currentLead = data;
+    console.log("setupFormView fired");
+ 
+    currentLead = data;
+    
+    viewModel.set("currentLead", currentLead);
+	
 	// request current location
 	if (!(data && data.Id)) {
 		app.view.title = "New Lead"

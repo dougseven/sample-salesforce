@@ -43,23 +43,23 @@
 			<div data-role="content">
 				<ul data-role="listview" data-style="inset">
 					<li>
-						<input id="first" type="text" data-bind="value: First__c" />
+						<input id="first" type="text" data-bind="value: currentLead.First__c" />
 						First Name
 					</li>
 					<li>
-						<input id="last" type="text" data-bind="value: Last__c" />
+						<input id="last" type="text" data-bind="value: currentLead.Last__c" />
 						Last Name
 					</li>
 					<li>
-						<input id="telephone" type="tel" data-bind="value: Telephone__c" />
+						<input id="telephone" type="tel" data-bind="value: currentLead.Telephone__c" />
 						Telephone
 					</li>
 					<li>
-						<input id="email" type="email" data-bind="value: Email__c" />
+						<input id="email" type="email" data-bind="value: currentLead.Email__c" />
 						Email
 					</li>
 					<li>
-						<input id="notes" type="text" data-bind="value: Notes__c" />
+						<input id="notes" type="text" data-bind="value: currentLead.Notes__c" />
 						Notes
 					</li>
 				</ul>

@@ -32,7 +32,12 @@ SalesforceWrapper.prototype.login = function (successCallback) {
 			self.sessionCallback(unescape(loc));
 		}
 	};
-	self.cb.showWebPage(self.getAuthorizeUrl(self.loginUrl, self.clientId, self.redirectUri));
+    
+    // YOU MUST EDIT THIS METHOD IF YOU WANT TO HIDE THE LOCATION, ADDRESS AND STATUS OF THE CHILD BROWSER WINDOW
+	self.cb.showWebPage(
+        self.getAuthorizeUrl(self.loginUrl, self.clientId, self.redirectUri),
+        { showLocationBar: false, showAddress: false, showNavigationBar: false }
+    );
 }
 
 SalesforceWrapper.prototype.getAuthorizeUrl = function (loginUrl, clientId, redirectUri) {

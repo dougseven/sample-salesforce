@@ -11,28 +11,28 @@
 	</head>
 	<body>
 		<!-- Login View -->
-		<div data-role="view" id="login" data-title="Welcome" data-layout="dev-layout">
+		<div data-role="view" id="login" data-layout="no-footer-layout" data-title="Welcome">
 			<div data-role="content">
 				<div class="centered-panel">
-					<a data-role="button" id="login-button">Login</a>
+					<a data-role="button" id="login-button" data-click="login">Login</a>
 				</div>
 			</div>
 		</div>
 
 		<!-- Home View -->
-		<div data-role="view" id="home" data-title="Welcome">
+		<div data-role="view" id="home" data-title="Lead Tracker">
 			<div data-role="content">
 				<div class="centered-panel">
-					<h3>Please select an option:</h3>
-					<a data-role="button" href="#new-lead" id="addNew">Add New Record</a>
-					<br/>
-					<a data-role="button" href="#leads-lookup" id="queryMyRecords">Query My Records</a>
+                    <h2>New Lead</h2>
+					<p>Use Lead (+ icon) view to add new leads to your Salesforce application.</p>
+                    <h2>Lead Look Up</h2>
+                    <p>Use Look Up (search icon) view to see a list of all your leads. From here you can select a Lead to edit.</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- New Lead View -->
-		<div data-role="view" id="new-lead" data-title="New Lead" data-show="newLeadShow">
+		<div data-role="view" id="lead" data-model="viewModel" data-title="New Lead">
 			<div data-role="header">
 				<div data-role="navbar">
 					<a class="nav-button" data-align="left" data-role="backbutton">Back</a>
@@ -43,23 +43,23 @@
 			<div data-role="content">
 				<ul data-role="listview" data-style="inset">
 					<li>
-						<input id="first" type="text" value="" />
+						<input id="first" type="text" data-bind="value: First__c" />
 						First Name
 					</li>
 					<li>
-						<input id="last" type="text" value="" />
+						<input id="last" type="text" data-bind="value: Last__c" />
 						Last Name
 					</li>
 					<li>
-						<input id="telephone" type="tel" value="" />
+						<input id="telephone" type="tel" data-bind="value: Telephone__c" />
 						Telephone
 					</li>
 					<li>
-						<input id="email" type="email" value="" />
+						<input id="email" type="email" data-bind="value: Email__c" />
 						Email
 					</li>
 					<li>
-						<input id="notes" type="text" value="" />
+						<input id="notes" type="text" data-bind="value: Notes__c" />
 						Notes
 					</li>
 				</ul>
@@ -91,62 +91,17 @@
 			</a>
 		</script>
 
-		<!-- Edit Lead View -->
-		<div data-role="view" id="edit-lead" data-title="Edit Lead" data-show="editLeadShow">
-			<div data-role="header">
-				<div data-role="navbar">
-					<a class="nav-button" data-align="left" data-role="backbutton">Back</a>
-					<span data-role="view-title"></span>
-					<a data-align="right" data-role="button" class="save-button">Save</a>
-				</div>
-			</div>
-			<div data-role="content">
-				<ul data-role="listview" data-style="inset">
-					<li>
-						<input type="text" value="" />
-						First Name
-					</li>
-					<li>
-						<input type="text" value="" />
-						Last Name
-					</li>
-					<li>
-						<input type="text" value="" />
-						Telephone
-					</li>
-					<li>
-						<input type="text" value="" />
-						Email
-					</li>
-					<li>
-						<input type="text" value="" />
-						Notes
-					</li>
-				</ul>
-				<div class="centered-panel">
-					<div id="edit-latlng">Getting location...</div>
-				</div>
-			</div>
-		</div>
-
 		<!-- Layouts -->
-		<div data-role="layout" data-id="dev-layout">
+		<div data-role="layout" data-id="no-footer-layout">
 			<div data-role="header">
 				<div data-role="navbar">
 					<span data-role="view-title"></span>
 				</div>
 			</div>
 
-			<div data-role="footer">
-				<div data-role="tabstrip">
-					<a href="#home" data-icon="home">Home</a>
-					<a href="#new-lead" data-icon="add">New Lead</a>
-					<a href="#leads-lookup" data-icon="search">Look Up</a>
-				</div>
-			</div>
 		</div>
 
-		<!-- No Footer Layout -->
+		<!-- Footer Layout -->
 		<div data-role="layout" data-id="default-layout">
 			<div data-role="header">
 				<div data-role="navbar">
@@ -157,7 +112,7 @@
 			<div data-role="footer">
 				<div data-role="tabstrip">
 					<a href="#home" data-icon="home">Home</a>
-					<a href="#new-lead" data-icon="add">New Lead</a>
+					<a href="#lead" data-icon="add" data-click="setupFormView">Lead</a>
 					<a href="#leads-lookup" data-icon="search">Look Up</a>
 				</div>
 			</div>

@@ -1,25 +1,24 @@
 
-var sfw, lat, lng, currentLead, lastData;
+var sfw, lat, lng, lastData;
+var currentLead;
 var lastCoords = {};
+
+viewModel = new kendo.observable({ currentLead: {} });
     
 document.addEventListener('deviceready', onDeviceReady);
 
 function onDeviceReady(event) {
 	console.log("onDeviceReady fired");
-
-    getLocation();
     
 	// Initialize the Salesforce wrapper
 	sfw = new SalesforceWrapper();
-    
-	// Add an event handler for the login button tap event
-	$("#login-button").on("touchstart", function (e) {
-		console.log("login-button.tap fired");
-        
-		e.preventDefault();
-		// Invoke the Salesforce.com oAuth2 authentication
-		sfw.login(setupHomeView);
-	});
+}
+
+function login() {
+	console.log("login-button.tap fired");
+
+	// Invoke the Salesforce.com oAuth2 authentication
+	sfw.login(setupHomeView);
 }
 
 function setupHomeView() {
@@ -27,12 +26,24 @@ function setupHomeView() {
 	app.navigate("#home");
 }
 
-function newLeadShow() {
-	getLocation();
+function leadShow() {
+	setupFormView()
 }
 
-function saveFormData(event) {
-    console.log("saveFormData fired");
+function setupFormView(data) {
+	currentLead = data;
+	// request current location
+	if (!(data && data.Id)) {
+		app.view.title = "New Lead"
+		navigator.geolocation.getCurrentPosition(onGeolocationSuccess, onGeolocationError, { enableHighAccuracy: true });
+	}
+	else {
+		app.view.title = "Edit Lead";
+	}
+}
+
+function saveFormData() {
+	console.log("saveFormData fired");
     
 	// Create a data object for the Lead being saved
 	var data = {};
@@ -46,7 +57,7 @@ function saveFormData(event) {
 	// If there is a current lead (i.e. the users is editing an existing lead)
 	// then poulate it with the new data
 	if (currentLead) {
-        console.log("currentLead == yes");
+		console.log("currentLead == yes");
         
 		// Copy the new data submitted to the currentLead object in memory
 		currentLead.First__c = data.First__c;
@@ -60,7 +71,7 @@ function saveFormData(event) {
 		data.Longitude__c = currentLead.Longitude__c
 	}
 	else if (lastCoords) {
-        console.log("lastCoords == yes");
+		console.log("lastCoords == yes");
         
 		data.Latitude__c = lastCoords.latitude;
 		data.Longitude__c = lastCoords.longitude;
@@ -68,12 +79,12 @@ function saveFormData(event) {
     
 	try {
 		if (currentLead == undefined) {
-            console.log("currentLead == undefined");
+			console.log("currentLead == undefined");
             
 			sfw.client.create("Lead__c", data, onSaveSuccess, onSaveError);
 		}
 		else {
-            console.log("currentLead != undefined");
+			console.log("currentLead: " + currentLead.Last__c);
             
 			sfw.client.update("Lead__c", currentLead.Id, data, onSaveSuccess, onSaveError);
 		}
@@ -84,88 +95,89 @@ function saveFormData(event) {
 }
 
 function onSaveSuccess(result) {
-    console.log("onSaveSuccess fired");
+	console.log("onSaveSuccess fired");
     
-    navigator.notification.alert("Data Saved", function(){
-        app.navigate("#home");
-    });
+	navigator.notification.alert("Data Saved", function() {
+		app.navigate("#home");
+	});
 }
 
 function onSaveError(request, status, error) {
-    console.log("onSaveError fired");
+	console.log("onSaveError fired");
     
-    navigator.notification.alert(request.responseText, null, "An Error Occurred");
-}
-
-function editLeadShow() {
-	// Load the Edit Lead form
+	navigator.notification.alert(request.responseText, null, "An Error Occurred");
 }
 
 function leadsShow() {
 	console.log("leadsShow fired");
-	/*
-    var groupedData = [
-		{ First_c: "Doe", Last_c: "John", Email_c: "johndoe@gmail.com", letter: "D" },
-		{ First_c: "Seven", Last_c: "Doug", Email_c: "dougseven@gmail.com", letter: "S" },
-		{ First_c: "Doe", Last_c: "Jane.", Email_c: "janedoe@gmail.com", letter: "D" },
-		{ First_c: "Abdulla", Last_c: "Anthony.", Email_c: "anthonyabdulla@telerik.com", letter: "A" }
-	];
- 
-    $("#leads-listview").kendoMobileListView({
-		dataSource: kendo.data.DataSource.create({data: groupedData, group: "letter" }),
-		template: $("#leadsListViewTemplate").html(),
-		headerTemplate: "${value}"
-	});
-   */
     
-    if(lastData) {
-        renderListData();
-    } else {
-        queryRecords();
-    }
+	if (lastData) {
+		renderListData();
+	}
+	else {
+		queryRecords();
+	}
 }
 
 function queryRecords() {
-    console.log("queryRecords fired");
+	console.log("queryRecords fired");
     
-    var query = "SELECT Email__c, First__c, Id, Last__c, Latitude__c, Longitude__c, Notes__c, Telephone__c " +
-    "FROM Lead__c " + 
-    "ORDER BY Last__c, First__c";
-    // Execute the Salesforce.com query as an async callback operation
-    sfw.client.query(query, onQuerySuccess, onQueryError);
+	var query = "SELECT Email__c, First__c, Id, Last__c, Latitude__c, Longitude__c, Notes__c, Telephone__c " +
+				"FROM Lead__c " + 
+				"ORDER BY Last__c, First__c";
+    
+	// Execute the Salesforce.com query as an async callback operation
+	sfw.client.query(query, onQuerySuccess, onQueryError);
 }
 
 function onQuerySuccess(response) {
-    console.log("onQuerySuccess fired");
-    console.log("response: " + JSON.stringify(response) );
-    console.log("response: " + response.records);
-    console.log("records: " + JSON.stringify(response.records) );
-    
-    lastData = { "records": JSON.stringify(response) };
-    renderListData();
+	lastData = { "records": response.records };
+	renderListData();
 }
 
 function onQueryError(request, status, error) {
-    console.log("onQueryError fired");
+	console.log("onQueryError fired");
     
-    navigator.notification.alert(request.responseText, null, "An Error Occurred");
-}
-
-function getLocation() {
-	navigator.geolocation.getCurrentPosition(onGeolocationSuccess, onGeolocationError, { enableHighAccuracy: true });
+	navigator.notification.alert(request.responseText, null, "An Error Occurred");
 }
 
 function renderListData() {
-    console.log("renderListData fired");
+	console.log("renderListData fired");
     
-    if(lastData) {
-        $("#leads-listview").kendoMobileListView({
-	    	dataSource: kendo.data.DataSource.create({data: lastData, group: "Last__c" }),
-            schema: {data: "records"},
-		    template: $("#leadsListViewTemplate").html(),
-		    headerTemplate: "${value}"
-	    });
-    }    
+	if (lastData) {
+		$("#leads-listview").kendoMobileListView({
+			dataSource: kendo.data.DataSource.create({data: lastData.records, group: "Last__c" }),
+			template: $("#leadsListViewTemplate").html(),
+			headerTemplate: "${value}",
+			click: function(e) {
+				console.log("Lead selected: " + e.dataItem.Last__c);
+                
+                var data = getRecordById(e.dataItem.Id);
+				setupFormView(data);
+                
+				app.navigate("#lead");
+			}
+		});
+	}    
+}
+
+function getRecordById(id) {
+    console.log("getRecordById fired; id = " + id);
+    
+	if (!lastData)
+		return;
+    
+	var records = lastData.records;
+    
+	for (var i = 0; i < records.length; i++) {
+		if (records[i].Id == id) {
+            console.log("Found record for " + records[i].Last__c);
+            
+			return records[i];
+		}
+	}
+    
+    console.log("No record found.");
 }
 
 function onGeolocationSuccess(position) {

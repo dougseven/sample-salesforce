@@ -64,7 +64,6 @@
     <Content Include="kendo\styles\kendo.mobile.all.min.css" />
     <Content Include="scripts\application.js" />
     <Content Include="scripts\forcetk.js" />
-    <Content Include="scripts\hello-world.js" />
     <Content Include="scripts\salesforceWrapper.js" />
     <Content Include="styles\main.css" />
     <Content Include="cordova.ios.js">

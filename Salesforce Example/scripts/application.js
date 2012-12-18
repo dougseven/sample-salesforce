@@ -26,21 +26,25 @@ function setupHomeView() {
 }
 
 function leadShow() {
-	setupFormView()
+    console.log("leadShow fired");
+	setupFormView();
 }
-
+  
 function setupFormView(data) {
-    console.log("setupFormView fired");
- 
+	console.log("setupFormView fired");
+
     currentLead = data;
- 
+    
+	console.log("currentLead: " + JSON.stringify(currentLead));
+   
 	if (!(data && data.Id)) {
 		app.view.title = "New Lead"
-        // Request the current location for a new entry
+		// Request the current location for a new entry
 		navigator.geolocation.getCurrentPosition(onGeolocationSuccess, onGeolocationError, { enableHighAccuracy: true });
-	} else {
+	}
+	else {
 		app.view.title = "Edit Lead";
-        viewModel.set("currentLead", currentLead);
+		viewModel.set("currentLead", currentLead);
 	}
 }
 
@@ -113,8 +117,8 @@ function onSaveError(request, status, error) {
 	navigator.notification.alert(request.responseText, null, "An Error Occurred");
 }
 
-function leadsShow() {
-	console.log("leadsShow fired");
+function lookupShow() {
+	console.log("lookupShow fired");
     
 	if (lastData) {
         // If there is data, render the ListView

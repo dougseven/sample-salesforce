@@ -131,7 +131,12 @@ var APP = (function($) {
 			data.Telephone__c = APP.id("telephone").value;
 			data.Notes__c = APP.id("notes").value;
     
-			var lead = currentLead;
+            APP._logEvent("saveFormData", "data.First__c: " + data.First__c);
+            APP._logEvent("saveFormData", "data.Last__c: " + data.Last__c);
+            
+			var lead = this.currentLead;
+            
+            APP._logEvent("saveFormData", "lead: " + lead);
         
 			// If there is a current lead (i.e. the users is editing an existing lead)
 			// then poulate it with the new data
@@ -149,7 +154,7 @@ var APP = (function($) {
 				data.Latitude__c = lead.Latitude__c;
 				data.Longitude__c = lead.Longitude__c;
 			}
-			else if (APP.lastCoords) {
+			else if (this.lastCoords) {
 				APP._logEvent("saveFormData", "lastCoords is true");
         
 				// If the app already has the coordinates for the device location, use them

@@ -1,12 +1,13 @@
 /*
-The code in this file is taken from the PhoneGap+ Database.com article 
-"Building PhoneGap applications powered by Database.com" by Andrew Trice
-published at http://www.adobe.com/devnet/phonegap/articles/phonegap-apps-powered-by-developercom.html
+The code in this file is taken from the PhoneGap + Database.com article 
+"Building PhoneGap Applications Powered by Database.com" by Andrew Trice published at 
+http://www.adobe.com/devnet/phonegap/articles/phonegap-apps-powered-by-developercom.html
 */
 
 function SalesforceWrapper() {
 	/* AUTHENTICATION PARAMETERS */
 	this.loginUrl = 'https://login.salesforce.com/';
+    // Your Consumer Key from Database.com goes here
 	this.clientId = '3MVG9rFJvQRVOvk6Af29sXr.DmAnygufDREKu_SxIHEgttUcRvmGwK4tr6nvEXX07BpiZX0FnJA==';
 
 	this.redirectUri = 'https://login.salesforce.com/services/oauth2/success';
@@ -33,10 +34,15 @@ SalesforceWrapper.prototype.login = function (successCallback) {
 		}
 	};
     
-    // YOU MUST EDIT THIS METHOD IF YOU WANT TO HIDE THE LOCATION, ADDRESS AND STATUS OF THE CHILD BROWSER WINDOW
+    // YOU MUST EDIT THIS METHOD IF YOU WANT TO HIDE THE LOCATION, 
+    // ADDRESS AND STATUS OF THE CHILD BROWSER WINDOW
 	self.cb.showWebPage(
         self.getAuthorizeUrl(self.loginUrl, self.clientId, self.redirectUri),
-        { showLocationBar: false, showAddress: false, showNavigationBar: false }
+        { 
+            showLocationBar: false, 
+            showAddress: false, 
+            showNavigationBar: false
+        }
     );
 }
 
